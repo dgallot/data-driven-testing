@@ -1,6 +1,7 @@
-package com.github.karamelsoft.testing.data.driven.testing.json.operations;
+package com.github.karamelsoft.testing.data.driven.testing.xml.operations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.github.karamelsoft.testing.data.driven.testing.api.operations.Load;
 
 import java.io.IOException;
@@ -8,9 +9,9 @@ import java.io.InputStream;
 import java.util.function.Consumer;
 
 /**
- * @author Frédéric Gendebien (frederic.gendebien@gmail.com)
+ * Created by Jonathan Schoreels on 27/06/15.
  */
-public class JsonLoad<O> implements Load<O> {
+public class XmlLoad<O> implements Load<O> {
 
     public static class Builder<O> {
 
@@ -18,24 +19,23 @@ public class JsonLoad<O> implements Load<O> {
         private Class<O> type;
 
         private Builder() {
-            objectMapper = new ObjectMapper();
-            objectMapper.findAndRegisterModules();
+            objectMapper = new XmlMapper();
         }
 
-        public Builder configure(final Consumer<ObjectMapper> configurator) {
+        public Builder configure(Consumer<ObjectMapper> configurator) {
             configurator.accept(objectMapper);
 
             return this;
         }
 
-        public Builder type(final Class<O> type) {
+        public Builder type(Class<O> type) {
             this.type = type;
 
             return this;
         }
 
-        public JsonLoad<O> build() {
-            return new JsonLoad<>(this);
+        public XmlLoad<O> build() {
+            return new XmlLoad<>(this);
         }
     }
 
@@ -46,13 +46,13 @@ public class JsonLoad<O> implements Load<O> {
     private final ObjectMapper objectMapper;
     private final Class<O> type;
 
-    private JsonLoad(final Builder builder) {
+    private XmlLoad(Builder builder) {
         objectMapper = builder.objectMapper;
         type = builder.type;
     }
 
     @Override
-    public O load(final InputStream input) throws IOException {
+    public O load(InputStream input) throws IOException {
         return objectMapper.readValue(input, type);
     }
 }

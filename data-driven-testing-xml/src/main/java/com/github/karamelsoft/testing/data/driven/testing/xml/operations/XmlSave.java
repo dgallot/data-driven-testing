@@ -1,7 +1,8 @@
-package com.github.karamelsoft.testing.data.driven.testing.json.operations;
+package com.github.karamelsoft.testing.data.driven.testing.xml.operations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.github.karamelsoft.testing.data.driven.testing.api.operations.Save;
 
 import java.io.IOException;
@@ -9,27 +10,26 @@ import java.io.OutputStream;
 import java.util.function.Consumer;
 
 /**
- * @author Frédéric Gendebien (frederic.gendebien@gmail.com)
+ * Created by Jonathan Schoreels on 27/06/15.
  */
-public class JsonSave<I> implements Save<I> {
+public class XmlSave<I> implements Save<I> {
 
     public static class Builder<I> {
         private final ObjectMapper objectMapper;
 
         private Builder() {
-            objectMapper = new ObjectMapper();
-            objectMapper.findAndRegisterModules();
+            objectMapper = new XmlMapper();
             objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
         }
 
-        public Builder configure(final Consumer<ObjectMapper> configurator) {
+        public Builder configure(Consumer<ObjectMapper> configurator) {
             configurator.accept(objectMapper);
 
             return this;
         }
 
-        public JsonSave<I> build() {
-            return new JsonSave<>(this);
+        public XmlSave<I> build() {
+            return new XmlSave<>(this);
         }
     }
 
@@ -39,12 +39,12 @@ public class JsonSave<I> implements Save<I> {
 
     private final ObjectMapper objectMapper;
 
-    private JsonSave(final Builder builder) {
+    private XmlSave(Builder builder) {
         objectMapper = builder.objectMapper;
     }
 
     @Override
-    public void save(final I value, final OutputStream output) throws IOException {
+    public void save(I value, OutputStream output) throws IOException {
         objectMapper.writeValue(output, value);
     }
 }

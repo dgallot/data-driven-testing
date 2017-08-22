@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project 
-    xmlns="http://maven.apache.org/POM/4.0.0" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation="
-        http://maven.apache.org/POM/4.0.0 
-        http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     
     <modelVersion>4.0.0</modelVersion>
     
     <groupId>com.github.karamelsoft.testing</groupId>
     <artifactId>data-driven-testing</artifactId>
-    <version>0.2.0</version>
+    <version>0.3.0</version>
     <packaging>pom</packaging>
 
     <name>${project.name}</name>
@@ -35,6 +30,7 @@
         <nexus-staging-maven-plugin.version>1.6.6</nexus-staging-maven-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <maven-enforcer-plugin.version>1.4.1</maven-enforcer-plugin.version>
+        <jgitflow-maven-plugin.version>1.0-m5.1</jgitflow-maven-plugin.version>
     </properties>
 
     <licenses>
@@ -122,6 +118,7 @@
         <module>data-driven-testing-core</module>
         <module>data-driven-testing-camel</module>
         <module>data-driven-testing-json</module>
+        <module>data-driven-testing-xml</module>
         <module>data-driven-testing-database</module>
         <module>data-driven-testing-rest</module>
     </modules>
@@ -149,12 +146,29 @@
                             <goals>
                                 <goal>shade</goal>
                             </goals>
-                            <configuration/>
+                            <configuration />
                         </execution>
                     </executions>
                 </plugin>
+                <plugin>
+                    <groupId>external.atlassian.jgitflow</groupId>
+                    <artifactId>jgitflow-maven-plugin</artifactId>
+                    <version>${jgitflow-maven-plugin.version}</version>
+                    <configuration>
+                        <enableSshAgent>true</enableSshAgent>
+                        <pushFeatures>true</pushFeatures>
+                        <pushHotfixes>true</pushHotfixes>
+                        <pushReleases>true</pushReleases>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>external.atlassian.jgitflow</groupId>
+                <artifactId>jgitflow-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
     </build>
 
     <profiles>
